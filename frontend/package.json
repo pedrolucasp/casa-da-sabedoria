@@ -9,7 +9,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "preact": "^10.27.0"
+    "date-fns": "^4.1.0",
+    "preact": "^10.27.0",
+    "preact-iso": "^2.10.0"
   },
   "devDependencies": {
     "@preact/preset-vite": "^2.10.2",
