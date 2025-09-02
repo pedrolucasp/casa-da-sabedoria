@@ -6,7 +6,7 @@ Projeto de reaproveitamento para as disciplinas de Frontend II e Backend II do
 IFSul.
 
 Assim como a Casa da Sabedoria, a proposta é uma aplicação, monorepo (à
-princípio) onde é desenvolvido uma aplicação de biblioteca.
+princípio) onde é desenvolvido uma aplicação de indexador de sebos.
 
 Será abordado:
 
