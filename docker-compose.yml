@@ -1,0 +1,27 @@
+services:
+  backend:
+    build:
+      context: backend
+      dockerfile: Dockerfile
+    command: ["bundle", "exec", "rails", "server", "--binding=0.0.0.0"]
+    user: "${UID:-1000}:${GID:-1000}"
+    depends_on:
+      - db
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./backend:/backend
+    env_file: .env
+    environment:
+      RAILS_ENV: development
+
+  db:
+    image: postgres:17-alpine
+    volumes:
+      - backend_db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: backend
+      POSTGRES_PASSWORD: backend
+
+volumes:
+  backend_db:
