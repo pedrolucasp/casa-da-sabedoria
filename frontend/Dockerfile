@@ -4,12 +4,17 @@ FROM node:22-alpine3.22
 ARG UID=1000
 ARG GID=1000
 
-EXPOSE 3000
-
 USER "${UID}:${GID}"
 
 WORKDIR /app
 
+COPY --chown="${UID}:${GID}" package*.json .
+
 RUN npm i
 
+COPY --chown="${UID}:${GID}" . .
+
+EXPOSE 5173
+
+# CMD ["npm", "run", "dev", "--", "--host"]
 CMD ["npm", "run", "dev"]

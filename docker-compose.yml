@@ -1,38 +1,47 @@
 services:
   frontend:
-    build:
-      context: frontend
-      dockerfile: Dockerfile
-    command: npm run dev
-    restart: "no"
+    build: ./frontend
     volumes:
       - ./frontend:/app
-    ports:
-      - "3000:3000"
+      - /app/node_modules
+    command: npm run dev -- --host 0.0.0.0
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    expose:
+      - "5173"   # expose only to nginx
+    depends_on:
+      - backend
 
   backend:
-    build:
-      context: backend
-      dockerfile: Dockerfile
-    command: ["bundle", "exec", "rails", "server", "--binding=0.0.0.0"]
+    build: ./backend
+    command: bash -c "bin/rails db:prepare && bin/rails s -b 0.0.0.0 -p 3000"
+    volumes:
+      - ./backend:/app
+      - /app/vendor
     user: "${UID:-1000}:${GID:-1000}"
     depends_on:
       - db
     ports:
-      - "3000:3000"
-    volumes:
-      - ./backend:/backend
+      - "3000" # only to nginx
     env_file: .env
     environment:
       RAILS_ENV: development
 
+  nginx:
+    build: ./etc
+    ports:
+      - "80:80"
+    depends_on:
+      - frontend
+      - backend
+
   db:
     image: postgres:17-alpine
     volumes:
-      - backend_db:/var/lib/postgresql/data
+      - db_data:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: backend
       POSTGRES_PASSWORD: backend
 
 volumes:
-  backend_db:
+  db_data:
