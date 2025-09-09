@@ -1,9 +1,9 @@
 const Footer = () => (
-  <div class="flex w-full px-5">
+  <div class="flex w-full px-5 border-top items-center text-center justify-center">
     {new Date().getFullYear()} Copyleft -
-    <a class="ml-1 text-blue-300"
+    <a className="ml-1 hover:underline hover:decoration-midnight"
        href="https://github.com/pedrolucasp/casa-dos-saberes">
-      C├│digo-fonte
+      Código-fonte
     </a>
   </div>
 )
