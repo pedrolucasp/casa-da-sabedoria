@@ -1,5 +1,13 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+	--color-midnight: #2e3192;
+	--color-tahiti: #3ab7bf;
+	--color-bermuda: #78dcca;
+}
+
 #app {
   width: 100%;
   height: 100%;
