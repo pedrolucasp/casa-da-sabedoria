@@ -1,7 +1,10 @@
-import { Button } from './Button'
+import { ButtonLink } from './ButtonLink'
 
 const NavLink = ({ text, href, button = false }) => {
-  const content = button ? <Button>{text}</Button> : <a href={href} className="hover:underline hover:decoration-midnight">{text}</a>
+  const content = (button ?
+    <ButtonLink to={'/login'}>{text}</ButtonLink> :
+    <a href={href} className="hover:underline hover:decoration-midnight">{text}</a>
+  )
 
   return (
     <li class="ml-3">
