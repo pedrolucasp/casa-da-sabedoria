@@ -16,8 +16,8 @@ services:
     build: ./backend
     command: bash -c "bin/rails db:prepare && bin/rails s -b 0.0.0.0 -p 3000"
     volumes:
-      - ./backend:/app
-      - /app/vendor
+      - ./backend:/backend
+      - /backend/vendor
     user: "${UID:-1000}:${GID:-1000}"
     depends_on:
       - db
