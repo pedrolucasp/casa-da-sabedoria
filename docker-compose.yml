@@ -14,7 +14,7 @@ services:
 
   backend:
     build: ./backend
-    command: bash -c "bin/rails db:prepare && bin/rails s -b 0.0.0.0 -p 3000"
+    command: bash -c "rm -f tmp/pids/server.pid && bin/rails db:prepare && bin/rails s -b 0.0.0.0 -p 3000"
     volumes:
       - ./backend:/backend
       - /backend/vendor
