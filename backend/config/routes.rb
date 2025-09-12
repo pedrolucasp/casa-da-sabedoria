@@ -12,8 +12,8 @@ Rails.application.routes.draw do
     }
 
 
-  #namespace :api do
+  # namespace :api do
   #  namespace :internal do
   #  end
-  #end
+  # end
 end
