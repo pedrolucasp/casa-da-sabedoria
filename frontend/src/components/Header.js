@@ -1,8 +1,9 @@
 import { ButtonLink } from './ButtonLink'
+import { useAuth } from "../contexts/AuthContext";
 
 const NavLink = ({ text, href, button = false }) => {
   const content = (button ?
-    <ButtonLink to={'/login'}>{text}</ButtonLink> :
+    <ButtonLink to={href}>{text}</ButtonLink> :
     <a href={href} className="hover:underline hover:decoration-midnight">{text}</a>
   )
 
@@ -13,19 +14,30 @@ const NavLink = ({ text, href, button = false }) => {
   )
 }
 
-const Header = () => (
-  <div class="flex w-full justify-between items-center my-5 px-5">
-    <img src="/casa-da-sabedoria.svg" class="w-[215px]" />
+const Header = () => {
+  const { user, token } = useAuth();
+  let href = '/login';
+  let text = 'Login';
 
-    <nav class="flex">
-      <ul class="list-style-none flex items-center">
-        <NavLink text="Inicial" href="/" />
-        <NavLink text="Sobre" href="/about" />
-        <NavLink text="Explorar" href="/explore" />
-        <NavLink text="Login" button={true} />
-      </ul>
-    </nav>
-  </div>
-)
+  if (user) {
+    href = '/logout';
+    text = 'Logout';
+  }
+
+  return (
+    <div class="flex w-full justify-between items-center my-5 px-5">
+      <img src="/casa-da-sabedoria.svg" class="w-[215px]" alt="logo" />
+
+      <nav class="flex">
+        <ul class="list-style-none flex items-center">
+          <NavLink text="Inicial" href="/" />
+          <NavLink text="Sobre" href="/about" />
+          <NavLink text="Explorar" href="/explore" />
+          <NavLink button={true} {...{ href, text }} />
+        </ul>
+      </nav>
+    </div>
+  )
+}
 
 export default Header
