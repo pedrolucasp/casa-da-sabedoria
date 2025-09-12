@@ -9,13 +9,15 @@
     "preview": "npx vite preview"
   },
   "dependencies": {
+    "@biomejs/biome": "^1.9.4",
     "@tailwindcss/vite": "^4.1.12",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "preact": "^10.27.0",
     "preact-iso": "^2.10.0",
     "tailwind-merge": "^3.3.1",
-    "tailwindcss": "^4.1.12"
+    "tailwindcss": "^4.1.12",
+    "vite-plugin-biome": "^1.0.12"
   },
   "devDependencies": {
     "@preact/preset-vite": "^2.10.2",
