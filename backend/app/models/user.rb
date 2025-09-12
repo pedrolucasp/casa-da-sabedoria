@@ -6,10 +6,10 @@ class User < ApplicationRecord
     :recoverable,
     :rememberable,
     :validatable,
-    :confirmable,
     :trackable,
     :jwt_authenticatable,
     jwt_revocation_strategy: JwtDenylist
+  # :confirmable,
 
   validates :name, presence: true
 end
