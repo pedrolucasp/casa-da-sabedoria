@@ -12,8 +12,11 @@ Rails.application.routes.draw do
     }
 
 
-  # namespace :api do
-  #  namespace :internal do
-  #  end
-  # end
+  namespace :api do
+   namespace :internal do
+     resources :users, only: [ :show, :update ] do
+       get "me", on: :collection, action: :me
+     end
+   end
+  end
 end
