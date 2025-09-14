@@ -2,7 +2,7 @@ import { useState } from "preact/hooks";
 import { useAuth } from "../contexts/AuthContext";
 import { useLocation } from 'preact-iso';
 
-import { Input } from '../components/Input';
+import { Input } from '../components/Inputs';
 
 export default function Login() {
   const { login } = useAuth();

@@ -1,7 +1,7 @@
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import { Button } from '../components/Button'
-import { Input } from '../components/Input'
+import { Input } from '../components/Inputs'
 import { Card } from '../components/Card'
 import { P, H1, H2 } from '../components/Typography'
 
