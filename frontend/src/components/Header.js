@@ -33,6 +33,8 @@ const Header = () => {
           <NavLink text="Inicial" href="/" />
           <NavLink text="Sobre" href="/about" />
           <NavLink text="Explorar" href="/explore" />
+          {user && (<NavLink text="Seu sebo" href="/your_shop" />)}
+
           <NavLink button={true} {...{ href, text }} />
         </ul>
       </nav>
