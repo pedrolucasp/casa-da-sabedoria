@@ -11,5 +11,7 @@ class User < ApplicationRecord
     jwt_revocation_strategy: JwtDenylist
   # :confirmable,
 
+  has_many :shops
+
   validates :name, presence: true
 end
