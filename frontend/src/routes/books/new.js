@@ -14,6 +14,10 @@ export default function New() {
   const [condition, setCondition] = useState(0);
   const [shelves, setShelves] = useState([]);
 
+  const [genres, setGenres] = useState([]);
+  const [authors, setAuthors] = useState([]);
+  const [publishers, setPublishers] = useState([]);
+
   const [loading, setLoading] = useState(false);
 
   const { token } = useAuth();
@@ -43,7 +47,77 @@ export default function New() {
       }
     }
 
-    fetchGenres();
+    // TODO: We could just retrieve from the context?
+    const fetchShelves = async () => {
+      try {
+        const res = await fetch("/api/internal/shelves/mine", {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+          },
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+
+          setGenres(data.shelves);
+        } else {
+          console.error("Failed to fetch user shelves...");
+        }
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    const fetchAuthors = async () => {
+      try {
+        const res = await fetch("/api/internal/authors", {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+          },
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+
+          setAuthors(data.authors);
+        } else {
+          console.error("Failed to fetch authors...");
+        }
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    // TODO: We could just retrieve from the context?
+    const fetchPublishers = async () => {
+      try {
+        const res = await fetch("/api/internal/publishers", {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+          },
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+
+          setPublishers(data.publishers);
+        } else {
+          console.error("Failed to fetch publishers...");
+        }
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    if (token) {
+      fetchShelves();
+      fetchGenres();
+      fetchAuthors();
+      fetchPublishers();
+    }
   }, [token]);
 
   async function handleSubmit(e) {
@@ -97,6 +171,20 @@ export default function New() {
             placeholder="Título do Livro"
             value={title}
             onInput={(e) => setTitle(e.target.value)}
+          />
+
+          <TextArea
+            placeholder="Descrição do Livro"
+            value={description}
+            onInput={(e) => setDescription(e.target.value)}
+          />
+
+          <Input
+            type="number"
+            placeholder="Ano da Edição desse livro"
+            value={year}
+            maxlength="4"
+            onInput={(e) => setYear(e.target.value)}
           />
 
           <Button
