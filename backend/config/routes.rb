@@ -14,15 +14,21 @@ Rails.application.routes.draw do
 
   namespace :api do
    namespace :internal do
-     resources :users, only: [ :show, :update ] do
+     resources :users, only: [:show, :update] do
        get "me", on: :collection, action: :me
      end
 
-     resources :shops, only: [ :index, :create, :destroy, :show, :update ] do
+     resources :shops, only: [:index, :create, :destroy, :show, :update] do
        get "mine", on: :collection, action: :mine
      end
 
-     resources :shelves, only: [ :index, :create, :destroy ]
+     resources :shelves, only: [:index, :create, :destroy] do
+       get "mine", on: :collection, action: :mine
+     end
+
+     resources :authors, only: [:index, :create]
+     resources :publishers, only: [:index, :create]
+     resources :genres, only: [:index, :create]
    end
   end
 end

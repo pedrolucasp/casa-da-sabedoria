@@ -1,5 +1,5 @@
 class Api::Internal::ShelvesController < ApplicationController
-  before_action :set_shop, only: :create
+  before_action :set_shop, only: [:create, :mine]
 
   def create
     @shelf = @shop.shelves.build(shelf_params)
@@ -10,6 +10,12 @@ class Api::Internal::ShelvesController < ApplicationController
       # TODO: Move this into a reusable method
       render json: { errors: @shelf.errors.full_messages }, status: :unprocessable_content
     end
+  end
+
+  def mine
+    @shelves = @shop.shelves.order(:name)
+
+    render json: { shelves: @shelves }
   end
 
   private
