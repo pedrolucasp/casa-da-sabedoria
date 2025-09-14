@@ -17,6 +17,12 @@ Rails.application.routes.draw do
      resources :users, only: [ :show, :update ] do
        get "me", on: :collection, action: :me
      end
+
+     resources :shops, only: [ :index, :create, :destroy, :show, :update ] do
+       get "mine", on: :collection, action: :mine
+     end
+
+     resources :shelves, only: [ :index, :create, :destroy ]
    end
   end
 end
