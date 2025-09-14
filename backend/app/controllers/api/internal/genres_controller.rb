@@ -6,12 +6,12 @@ class Api::Internal::GenresController < ApplicationController
   end
 
   def create
-    @genre = Genre.new(author_params)
+    @genre = Genre.new(genre_params)
 
     if @genre.save
       render json: { genre: @genre }
     else
-      render json: { error: @genre .errors.full_messages }, status: :unprocessable_content
+      render json: { error: @genre.errors.full_messages }, status: :unprocessable_content
     end
   end
 
