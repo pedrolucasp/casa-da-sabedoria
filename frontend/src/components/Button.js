@@ -18,8 +18,8 @@ export function Button({ variant = "default", size = "default", className, disab
   }
 
   const states = {
-    default: '',
-    disabled: 'text-gray-300 border-gray-300 hover:shadow'
+    default: 'cursor-pointer',
+    disabled: 'text-gray-300 border-gray-300 hover:shadow cursor-blocked'
   }
 
   //const sizes = {
