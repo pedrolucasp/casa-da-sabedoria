@@ -3,7 +3,7 @@ FactoryBot.define do
     title { "O Estrangeiro" }
     description { "Esse livro me desgraçou" }
     year { 1942 }
-    status { 1 }
+    condition { 1 }
     publisher { nil }
   end
 end
