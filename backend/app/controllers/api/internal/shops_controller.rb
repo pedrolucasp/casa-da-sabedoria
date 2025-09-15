@@ -1,4 +1,6 @@
 class Api::Internal::ShopsController < ApplicationController
+  before_action :authenticate_user!
+
   def mine
     @shop = current_user.shops.includes(books: :shelves).sole
 
