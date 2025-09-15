@@ -6,6 +6,7 @@ import { P, H1, H2, H3 } from '../../components/Typography';
 import { Input, TextArea } from '../../components/Inputs';
 import { useAuth } from '../../contexts/AuthContext';
 import { useLocation } from 'preact-iso'
+import ImageGallery from '../../components/ImageGallery';
 
 import Select from 'react-select'
 import CreatableSelect, { useCreatable } from 'react-select/creatable';
@@ -20,6 +21,10 @@ export default function New() {
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [selectedShelves, setSelectedShelves] = useState([]);
   const [selectedPublisher, setSelectedPublisher] = useState();
+
+  const [cover, setCover] = useState(null);
+  const [photos, setPhotos] = useState([]);
+
 
   // Options data and shit
   const [genres, setGenres] = useState([]);
@@ -241,33 +246,64 @@ export default function New() {
     }
   }
 
+  const handleCoverChange = (e) => {
+    setCover(e.target.files[0]);
+  };
+
+  const handlePhotosChange = (e) => {
+    setPhotos([...photos, ...Array.from(e.target.files)]);
+  };
+
+  const removePhoto = (index) => {
+    setPhotos(photos.filter((_, i) => i !== index));
+  };
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
     try {
+      const formData = new FormData();
+      formData.append("book[title]", title);
+      formData.append("book[description]", description);
+      formData.append("book[year]", year);
+      formData.append("book[condition]", condition);
+
+      if (selectedPublisher) {
+        formData.append("book[publisher_id]", selectedPublisher.value);
+      }
+
+      for (const s of selectedShelves) {
+        formData.append("book[shelf_ids][]", s.value)
+      }
+
+      for (const a of selectedAuthors) {
+        formData.append("book[author_ids][]", a.value)
+      }
+
+      for (const g of selectedGenres) {
+        formData.append("book[genre_ids][]", g.value)
+      }
+
+      if (cover) {
+        formData.append("book[cover]", cover);
+      }
+
+      for (const p of photos) {
+        formData.append("book[photos][]", p);
+      }
+
       const res = await fetch("/api/internal/books", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({
-          book: {
-            title,
-            description,
-            year,
-            condition,
-            publisher_id: selectedPublisher.value,
-            shelf_ids: selectedShelves.map((s) => s.value),
-            author_ids: selectedAuthors.map((a) => a.value),
-            genre_ids: selectedGenres.map((g) => g.value)
-          }
-        })
+        body: formData,
       });
 
       if (res.ok) {
-        route('/your_shop');
+        route("/your_shop");
       } else {
         console.error("Failed to create book");
       }
@@ -289,7 +325,7 @@ export default function New() {
           </P>
         </div>
 
-        <form onSubmit={handleSubmit} class="grid gap-4">
+        <form  onSubmit={handleSubmit} class="grid gap-4">
           <Input
             type="text"
             placeholder="Título do Livro"
@@ -383,6 +419,67 @@ export default function New() {
               isDisabled={loadingPublishers}
               onChange={(newValue) => setSelectedPublisher(newValue)}
               value={selectedPublisher} />
+          </fieldset>
+
+          <hr className="border-neutral-300" />
+
+          <div className="mb-2">
+            <H2>Imagens</H2>
+
+            <P>
+              Aqui precisamos identificar qual o estado do Livro
+            </P>
+          </div>
+
+          <fieldset>
+            <H3 class="mb-1">Capa</H3>
+
+            <Input
+              type="file"
+              accept="image/*"
+              id="cover"
+              placeholder="Buscar"
+              onChange={handleCoverChange}
+            />
+
+            <P className="mt-1 text-sm text-gray-500"
+              id="cover">
+              SVG, PNG, JPG.
+            </P>
+
+            {cover && (
+              <div className="mt-2">
+                <img alt="cover" src={URL.createObjectURL(cover)}
+                     className="w-32 h-32 object-cover rounded" />
+
+                <Button
+                  className="mt-1"
+                  variant="danger"
+                  size="sm"
+                  onClick={() => setCover(null)}
+                >
+                  Remover capa
+                </Button>
+              </div>
+            )}
+          </fieldset>
+
+          <fieldset>
+            <H3 class="mb-1">Fotos adicionais</H3>
+
+            <input
+              type="file"
+              id="gallery"
+              accept="image/*"
+              multiple
+              onChange={handlePhotosChange}
+            />
+            <P className="mt-1 text-sm text-gray-500"
+              id="gallery">
+              SVG, PNG, JPG.
+            </P>
+
+            <ImageGallery images={photos} onRemove={removePhoto} />
           </fieldset>
 
           <Button
