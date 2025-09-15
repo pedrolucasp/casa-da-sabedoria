@@ -1,6 +1,9 @@
 class Book < ApplicationRecord
   belongs_to :publisher
 
+  has_one_attached :cover
+  has_many_attached :photos
+
   has_many :book_authors
   has_many :authors, through: :book_authors
 
