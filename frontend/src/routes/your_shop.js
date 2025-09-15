@@ -2,7 +2,13 @@ import { useEffect, useState } from "preact/hooks";
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { ButtonLink } from '../components/ButtonLink';
+import { Button } from '../components/Button';
+import { Input } from '../components/Inputs';
 import { P, H1, H2 } from '../components/Typography';
+
+import YourBooks from '../components/YourBooks';
+import YourShelves from '../components/YourShelves';
+
 import { useAuth } from '../contexts/AuthContext';
 
 export default function YourShop() {
@@ -11,6 +17,8 @@ export default function YourShop() {
   const [loading, setLoading] = useState(true);
   const [shop, setShop] = useState(null);
 
+  // TODO: Implement an actual fucking tab switcher
+  const [currentView, setCurrentView] = useState('books')
 
   useEffect(() => {
     async function fetchShop() {
@@ -40,7 +48,15 @@ export default function YourShop() {
     }
   }, [token]);
 
-  if (loading) return <div className="p-8 text-center">Carregando...</div>;
+  if (loading) {
+    return (
+      <>
+        <Header />
+        <div className="p-8 text-center">Carregando...</div>
+        <Footer />
+      </>
+    );
+  }
 
   if (!shop) {
     return (
@@ -63,49 +79,39 @@ export default function YourShop() {
     );
   }
 
-  // The hub. Maybe we need to rework this into a better thing?
   return (
     <>
       <Header />
-      <div className="p-8 max-w-3xl mx-auto">
-        <H1 className="text-2xl font-bold mb-4">{shop.name}</H1>
-        <P className="text-gray-600 mb-6">{shop.bio}</P>
+      <div className="flex flex-col md:flex-row p-8 max-w-7xl mx-auto gap-8">
+        {/* Sidebar */}
+        <aside className="md:w-64 flex-shrink-0 space-y-4">
+          <H1 className="text-2xl font-bold mb-4">{shop.name}</H1>
+          <P className="text-gray-600 mb-6">{shop.bio}</P>
 
-        <div className="grid gap-4 mt-6">
-          <ButtonLink
-            to="/shelves/new"
-            variant="outline"
-            size="xl"
-          >
-            Adicionar uma nova estante
-          </ButtonLink>
+          <Button
+            className="w-full text-left"
+            onClick={() => setCurrentView('books')}
+            variant={currentView === 'books' ? 'default' : 'outline'}
+            size="xl">
+            Livros
+          </Button>
 
-          <ButtonLink
-            to="/books/new"
-            variant="outline"
-            size="xl"
-            disabled={!shop.shelves?.length}
-          >
-            Adicionar novo livro
-          </ButtonLink>
-
-          <ButtonLink
-            to={`/shops/${shop.id}/shelves`}
-            variant="outline"
-            size="xl"
-          >
+          <Button
+            onClick={() => setCurrentView('shelves')}
+            className="w-full text-left"
+            variant={currentView === 'shelves' ? 'default' : 'outline'}
+            size="xl">
             Gerenciar estantes
-          </ButtonLink>
+          </Button>
+        </aside>
 
-          <ButtonLink
-            to={`/shops/${shop.id}/books`}
-            variant="outline"
-            size="xl"
-            disabled={!shop.shelves?.length}
-          >
-            Gerenciar livros
-          </ButtonLink>
-        </div>
+        {currentView === 'books' && (
+          <YourBooks shop={shop} />
+        )}
+
+        {currentView === 'shelves' && (
+          <YourShelves shop={shop} />
+        )}
       </div>
       <Footer />
     </>
