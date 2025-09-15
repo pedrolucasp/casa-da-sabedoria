@@ -93,7 +93,7 @@ const YourShelves = ({ shop, ...props }) => {
                         <Button
                           variant="subtle"
                           size="sm"
-                          onClick={() => route(`/your_shop/shelves/${shelf.id}/edit`)}
+                          onClick={() => route(`/shelves/${shelf.id}/edit`)}
                         >
                           Editar
                         </Button>
