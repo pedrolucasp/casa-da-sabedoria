@@ -3,6 +3,7 @@ FactoryBot.define do
     name { "Beco do Diabo" }
     location { "Pelotas, RS" }
     bio { "Beco onde encontram os piores livros" }
-    user { nil }
+
+    association :user
   end
 end

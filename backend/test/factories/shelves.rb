@@ -1,6 +1,7 @@
 FactoryBot.define do
   factory :shelf do
     name { "MyString" }
-    shop { nil }
+
+    association :shop
   end
 end
