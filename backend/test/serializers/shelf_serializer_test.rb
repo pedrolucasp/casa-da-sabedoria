@@ -22,7 +22,7 @@ class ShelfSerializerTest < ActiveSupport::TestCase
   end
 
   test "serializes popular genres" do
-    json = ShelfSerializer.new(@shelf).as_json
+    json = ShelfSerializer.new(@shelf, view: :detailed).as_json
 
     assert_equal "Favorites", json[:name]
     assert_includes json[:popular_genres], "Fantasy"
@@ -33,14 +33,15 @@ class ShelfSerializerTest < ActiveSupport::TestCase
   end
 
   test "serialize object" do
-    json = ShelfSerializer.new(@shelf).as_json
+    json = ShelfSerializer.new(@shelf, view: :detailed).as_json
 
     assert_equal [
       :id,
       :name,
-      :books_count,
+      :updated_at,
       :popular_genres,
-      :updated_at
+      :books_count,
+      :books
     ], json.keys
   end
 end

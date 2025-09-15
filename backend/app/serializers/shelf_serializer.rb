@@ -1,7 +1,20 @@
 class ShelfSerializer < ApplicationSerializer
-  attributes :id, :name, :books_count, :popular_genres, :updated_at
-
   delegate :id, :name, :updated_at, :popular_genres, to: :object
+
+  association :books, serializer: BookSerializer, view: :summary, many: true
+
+  view :summary do |v|
+    v.attributes :id, :name, :updated_at
+  end
+
+  view :detailed do |v|
+    v.attributes :id, :name, :updated_at, :popular_genres, :books_count
+  end
+
+  view :with_books do |v|
+    v.attributes :id, :name, :updated_at
+    v.association :books, view: :detailed
+  end
 
   def books_count
     object.books.count
