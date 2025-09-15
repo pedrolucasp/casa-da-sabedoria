@@ -23,7 +23,7 @@ Rails.application.routes.draw do
        get "books", on: :member, action: :books
      end
 
-     resources :books, only: [:index, :create, :destroy, :update]
+     resources :books, only: [:index, :edit, :create, :destroy, :update]
 
      resources :shelves, only: [:index, :show, :update, :create, :destroy] do
        get "mine", on: :collection, action: :mine
