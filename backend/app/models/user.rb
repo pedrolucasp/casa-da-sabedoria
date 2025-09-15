@@ -12,6 +12,8 @@ class User < ApplicationRecord
   # :confirmable,
 
   has_many :shops
+  has_many :shelves, through: :shops
+  has_many :books, through: :shelves
 
   validates :name, presence: true
 end
