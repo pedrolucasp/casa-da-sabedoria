@@ -2,6 +2,9 @@ import { useState, useEffect } from 'preact/hooks';
 import { useLocation } from 'preact-iso';
 import { useAuth } from '../contexts/AuthContext';
 
+import Header from '../components/Header';
+import Footer from '../components/Footer';
+
 const Logout = () => {
   const { route } = useLocation();
   const { logout, token } = useAuth();
@@ -40,9 +43,13 @@ const Logout = () => {
   }, [route, token, logout])
 
   return (
-    <section className="flex-1 flex flex-col items-center justify-center px-6 text-center py-20">
-      Logout... 👋
-    </section>
+    <>
+      <Header />
+      <section className="flex-1 flex flex-col items-center justify-center px-6 text-center py-20">
+        Logout... 👋
+      </section>
+      <Footer />
+    </>
   )
 }
 
