@@ -37,12 +37,15 @@ const YourShelves = ({ shop, ...props }) => {
 
   async function handleDelete(shelfId) {
     if (!confirm("Tem certeza que deseja deletar esta estante?")) return;
+
     setDeleting(true);
+
     try {
       const res = await fetch(`/api/internal/shelves/${shelfId}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` }
       });
+
       if (res.ok) {
         setShelves(shelves.filter(s => s.id !== shelfId));
       } else {

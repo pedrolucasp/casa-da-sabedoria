@@ -12,6 +12,7 @@ const YourBooks = ({ shop, ...props }) => {
 
   const { token } = useAuth();
   const [loading, setLoading] = useState(true);
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     async function fetchBooks() {
@@ -41,6 +42,27 @@ const YourBooks = ({ shop, ...props }) => {
     }
   }, [token, shop]);
 
+  async function handleDelete(bookId) {
+    if (!confirm("Tem certeza que deseja deletar este livro?")) return;
+
+    setDeleting(true);
+
+    try {
+      const res = await fetch(`/api/internal/books/${bookId}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      if (res.ok) {
+        setBooks(books.filter(b => b.id !== bookId));
+      } else {
+        console.error("Failed to delete shelf");
+      }
+    } finally {
+      setDeleting(false);
+    }
+  }
+
   return (
     <main className="flex-1">
       <div className="flex items-center justify-between mb-3">
@@ -58,7 +80,7 @@ const YourBooks = ({ shop, ...props }) => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {books.length > 0 ? (
           books.map(book => (
-            <BookCard key={book.id} book={book} />
+            <BookCard key={book.id} book={book} onDelete={handleDelete} />
           ))
         ) : (
           <P>Nenhum livro encontrado</P>

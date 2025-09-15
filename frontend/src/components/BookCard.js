@@ -1,7 +1,7 @@
 import { Button } from './Button'
 import { ButtonLink } from './ButtonLink'
 
-const BookCard = ({ book }) => {
+const BookCard = ({ book, onDelete }) => {
   const coverUrl = book.cover_url || "/logo.svg";
 
   return (
@@ -29,6 +29,7 @@ const BookCard = ({ book }) => {
         <Button
           type="button"
           variant="danger"
+          onClick={() => onDelete(book.id)}
           size="xs">
           Delete
         </Button>
