@@ -16,7 +16,7 @@ class ShelfSerializerTest < ActiveSupport::TestCase
     # Fantasy twice, Sci-Fi once
     book_1 = create(:book, publisher:, genres: [@genre1])
     book_2 = create(:book, publisher:, genres: [@genre1, @genre2])
-    book_3 = create(:book, publisher:, genres: [@genre3, @genre4])
+    book_3 = create(:book, publisher:, genres: [@genre2, @genre4, @genre3])
 
     @shelf.books = [book_1, book_2, book_3]
   end
@@ -40,8 +40,7 @@ class ShelfSerializerTest < ActiveSupport::TestCase
       :name,
       :updated_at,
       :popular_genres,
-      :books_count,
-      :books
+      :books_count
     ], json.keys
   end
 end

@@ -1,7 +1,18 @@
 class BookSerializer < ApplicationSerializer
-  delegate :id, :title, :updated_at, :year, to: :object
+  delegate :id,
+    :title,
+    :description,
+    :condition,
+    :created_at,
+    :updated_at,
+    :year,
+    :shelf_ids,
+    :photos, to: :object
 
   association :authors, serializer: AuthorSerializer, view: :summary, many: true
+  association :publisher, serializer: PublisherSerializer, view: :summary
+  association :genres, serializer: GenreSerializer, view: :summary, many: true
+  association :shelves, serializer: ShelfSerializer, view: :summary, many: true
 
   view :summary do |v|
     v.attributes :id, :title, :updated_at
@@ -13,6 +24,24 @@ class BookSerializer < ApplicationSerializer
 
   view :fully_detailed do |v|
     v.attributes :id, :title, :updated_at, :year, :cover_with_path
+
+    v.association :authors, view: :summary
+  end
+
+  view :edit do |v|
+    v.attributes :id, :title, :description, :year, :cover_with_path, :photos_path, :updated_at
+
+    v.association :publisher, view: :summary
+    v.association :shelves, view: :summary
+    v.association :genres, view: :summary
+    v.association :authors, view: :summary
+  end
+
+  def photos_path
+    object.photos.map do |photo|
+      Rails.application.routes.url_helpers
+        .rails_blob_path(photo, only_path: true)
+    end
   end
 
   def cover_with_path

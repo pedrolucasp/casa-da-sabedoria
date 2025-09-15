@@ -129,23 +129,23 @@ class ApplicationSerializer
     end
   end
 
+  # TODO: Please refactor this method, it's a bit messy
   def active_associations
-    base = self.class.associations.dup
+    view_name = options[:view]&.to_sym
+    if view_name && (view = self.class.views[view_name])
 
-    if (view_name = options[:view]&.to_sym) && self.class.views[view_name]
-      overrides = self.class.views[view_name].fetch_associations
-
-      overrides.each do |name, ov|
-        if base[name]
-          # merge override view into base association config
-          base[name] = base[name].merge(override_view: ov[:view])
+      # only associations explicitly listed in this view
+      view.fetch_associations.each_with_object({}) do |(name, ov), h|
+        if (base_cfg = self.class.associations[name])
+          h[name] = base_cfg.merge(override_view: ov[:view])
         else
-          # allow view to include an association that wasn’t declared? optional
-          base[name] = { view: ov[:view] }
+          # allow ad-hoc associations only inside views
+          h[name] = { view: ov[:view] }
         end
       end
+    else
+      # no view: include all declared associations
+      self.class.associations
     end
-
-    base
   end
 end
