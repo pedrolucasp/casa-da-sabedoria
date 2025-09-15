@@ -16,6 +16,12 @@ class ShelfSerializer < ApplicationSerializer
     v.association :books, view: :detailed
   end
 
+  view :detailed_with_books do |v|
+    v.attributes :id, :name, :updated_at
+
+    v.association :books, view: :fully_detailed
+  end
+
   def books_count
     object.books.count
   end
