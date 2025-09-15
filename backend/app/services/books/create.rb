@@ -29,7 +29,9 @@ module Books
           title:       params[:title],
           description: params[:description],
           year:        params[:year],
-          publisher:   publisher
+          publisher:   publisher,
+          cover:       params[:cover],
+          photos:      params[:photos]
         )
 
         @book.authors = authors
