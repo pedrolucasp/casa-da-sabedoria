@@ -16,7 +16,7 @@ export default function New() {
   const { token } = useAuth();
   const { route } = useLocation();
 
-  async function handleSubmit(e) {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
@@ -29,6 +29,7 @@ export default function New() {
         },
         body: JSON.stringify({ shop: { name, bio, location } }),
       });
+
       if (res.ok) {
         route('/your_shop');
       } else {

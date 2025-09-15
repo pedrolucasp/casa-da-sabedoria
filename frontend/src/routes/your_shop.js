@@ -14,14 +14,15 @@ import { useAuth } from '../contexts/AuthContext';
 export default function YourShop() {
   const { token } = useAuth();
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [shop, setShop] = useState(null);
 
   // TODO: Implement an actual fucking tab switcher
   const [currentView, setCurrentView] = useState('books')
 
   useEffect(() => {
-    async function fetchShop() {
+    const fetchShop = async () =>{
+      setLoading(true);
       try {
         // TODO: Move this into a single place, so we don't rewrite this
         // everytime
