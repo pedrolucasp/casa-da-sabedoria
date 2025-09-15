@@ -4,6 +4,8 @@ class Shelf < ApplicationRecord
   has_many :shelf_books, dependent: :destroy
   has_many :books, through: :shelf_books
 
+  validates :name, presence: true, allow_blank: false
+
   def popular_genres
     books
       .joins(:genres)
