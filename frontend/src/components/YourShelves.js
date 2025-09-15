@@ -62,8 +62,7 @@ const YourShelves = ({ shop, ...props }) => {
           <H1 className="">Suas Estantes</H1>
 
           <ButtonLink
-            to="/books/new"
-            disabled={!shop.shelves?.length}>
+            to="/shelves/new">
             Adicionar nova estante
           </ButtonLink>
         </div>

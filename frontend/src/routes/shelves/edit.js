@@ -88,8 +88,8 @@ export default function Edit({ id }) {
           <div className="">
             Essa estante possui os seguintes livros:
 
-            {shelf && shelf.books.map((b) => (
-              <P className="mb-1">
+            {shelf?.books.map((b) => (
+              <P key={b.id} className="mb-1">
                 {b.authors.map((a) => a.name).join(', ')} — {b.title} ({b.year})
               </P>
             ))}
