@@ -25,7 +25,7 @@ Rails.application.routes.draw do
 
      resources :books, only: [:index, :create, :destroy, :update]
 
-     resources :shelves, only: [:index, :create, :destroy] do
+     resources :shelves, only: [:index, :show, :update, :create, :destroy] do
        get "mine", on: :collection, action: :mine
      end
 

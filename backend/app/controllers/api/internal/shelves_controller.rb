@@ -1,11 +1,14 @@
 class Api::Internal::ShelvesController < ApplicationController
+  before_action :authenticate_user!
+
+  before_action :set_shelf, only: [:show, :update, :destroy]
   before_action :set_shop, only: [:create, :mine, :index]
 
   def index
     @shelves = @shop.shelves.order(:name)
 
     render json: { shelves: @shelves
-      .map { ::ShelfSerializer.new(it) } }
+      .map { ::ShelfSerializer.new(it, view: :detailed) } }
   end
 
   def create
@@ -19,9 +22,19 @@ class Api::Internal::ShelvesController < ApplicationController
     end
   end
 
-  def destroy
-    @shelf = Shelf.find_by(id: params[:id])
+  def update
+    if @shelf.update(shelf_params)
+      render json: @shelf, status: :ok
+    else
+      render json: { errors: @shelf.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
 
+  def show
+    render json: ::ShelfSerializer.new(@shelf, view: :with_books)
+  end
+
+  def destroy
     if @shelf.destroy
       head :no_content
     else
@@ -39,6 +52,10 @@ class Api::Internal::ShelvesController < ApplicationController
 
   def set_shop
     @shop = current_user.shops.sole
+  end
+
+  def set_shelf
+    @shelf = current_user.shelves.find(params[:id])
   end
 
   def shelf_params
