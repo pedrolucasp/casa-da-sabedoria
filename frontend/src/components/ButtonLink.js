@@ -2,26 +2,34 @@ import { cn } from "../lib/utils"
 import { Button } from './Button'
 
 export function ButtonLink({ to, children, variant = "default", size = "default", disabled = false, className, ...props }) {
-  const base = "inline-flex transition cursor-pointer items-center rounded-lg font-medium text-white shadow"
+  const base =
+    "rounded font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2"
 
-  // TODO: Unify all this crap
   const variants = {
-    default: "text-white bg-midnight hover:bg-midnight/90 focus:ring-accent hover:bg-midnight/90",
+    default:
+      "cursor-pointer text-white bg-midnight hover:bg-midnight/90 focus:ring-accent",
     outline:
-      "border text-neutral-900 shadow hover:shadow-md focus:ring-black-400",
+      "cursor-pointer border text-neutral-900 shadow hover:shadow-md focus:ring-black-400",
     subtle:
-      "text-neutral-600 hover:bg-neutral-100 focus:ring-neutral-300",
+      "cursor-pointer text-slate-900 bg-alice hover:bg-alice/90 focus:ring-slate-900",
+    danger:
+      "cursor-pointer bg-red-600 text-white hover:bg-red-600/90 focus:ring-red-900"
   }
 
   const sizes = {
-    default: "px-3 py-1.5 text-sm",
-    lg: "px-4 py-2",
+    default: "px-3 py-2 text-sm",
+    xs: "text-xs px-2 py-1",
+    sm: "text-sm px-2 py-1",
+    lg: "px-4 py-2 text-base",
     xl: "p-4"
   }
 
-  const states = {
-    default: '',
-    disabled: 'text-gray-300 border-gray-300'
+  // Variant-aware disabled styles
+  const disabledVariants = {
+    default: "bg-midnight/40 text-white/70 cursor-not-allowed",
+    outline: "border-gray-300 text-gray-400 cursor-not-allowed",
+    subtle: "bg-alice/50 text-slate-400 cursor-not-allowed",
+    danger: "bg-red-400 text-white/70 cursor-not-allowed"
   }
 
   return (
@@ -35,9 +43,8 @@ export function ButtonLink({ to, children, variant = "default", size = "default"
         href={to}
         className={cn(
           base,
-          variants[variant],
+          disabled ? disabledVariants[variant] : variants[variant],
           sizes[size],
-          states[disabled ? 'disabled' : 'default'],
           className
         )}
         disabled={disabled}

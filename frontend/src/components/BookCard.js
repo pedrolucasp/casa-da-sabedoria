@@ -1,4 +1,5 @@
 import { Button } from './Button'
+import { ButtonLink } from './ButtonLink'
 
 const BookCard = ({ book }) => {
   const coverUrl = book.cover_url || "/logo.svg";
@@ -18,12 +19,12 @@ const BookCard = ({ book }) => {
       <p className="text-xs text-gray-500 mb-2">{book.year || "Unknown year"}</p>
 
       <div class="flex gap-2 mt-auto">
-        <Button
-          type="button"
+        <ButtonLink
+          to={`/books/${book.id}/edit`}
           variant="subtle"
           size="xs">
           Edit
-        </Button>
+        </ButtonLink>
 
         <Button
           type="button"

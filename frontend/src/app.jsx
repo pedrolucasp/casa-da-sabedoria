@@ -15,6 +15,7 @@ import { default as NewShelf } from './routes/shelves/new'
 import { default as NewBook } from './routes/books/new'
 
 import { default as EditShelf } from './routes/shelves/edit'
+import { default as EditBook } from './routes/books/edit'
 
 const NotFound = lazy(() => import('./routes/not_found'))
 
@@ -32,6 +33,7 @@ export const App = () => {
             <NewShop path="/shops/new" />
             <NewShelf path="/shelves/new" />
             <EditShelf path="/shelves/:id/edit" />
+            <EditBook path="/books/:id/edit" />
 
             <NewBook path="/books/new" />
 

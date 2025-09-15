@@ -1,17 +1,19 @@
 import { useEffect, useState } from "preact/hooks";
+
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import { Button } from '../../components/Button';
 import { P, H1, H2, H3 } from '../../components/Typography';
 import { Input, TextArea } from '../../components/Inputs';
-import { useAuth } from '../../contexts/AuthContext';
-import { useLocation } from 'preact-iso'
 import ImageGallery from '../../components/ImageGallery';
 
-import Select from 'react-select'
-import CreatableSelect, { useCreatable } from 'react-select/creatable';
+import Select from 'react-select';
+import CreatableSelect from 'react-select/creatable';
 
-export default function New() {
+import { useAuth } from '../../contexts/AuthContext';
+import { useLocation, useRoute } from 'preact-iso';
+
+export default function Edit({ id }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [year, setYear] = useState("");
@@ -21,19 +23,14 @@ export default function New() {
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [selectedShelves, setSelectedShelves] = useState([]);
   const [selectedPublisher, setSelectedPublisher] = useState();
-
   const [cover, setCover] = useState(null);
   const [photos, setPhotos] = useState([]);
 
-
-  // Options data and shit
   const [genres, setGenres] = useState([]);
   const [authors, setAuthors] = useState([]);
   const [publishers, setPublishers] = useState([]);
 
-  // For the whole page
   const [loading, setLoading] = useState(false);
-
   const [loadingAuthors, setLoadingAuthors] = useState(false);
   const [loadingGenres, setLoadingGenres] = useState(false);
   const [loadingPublishers, setLoadingPublishers] = useState(false);
@@ -41,29 +38,27 @@ export default function New() {
   const { token } = useAuth();
   const { route } = useLocation();
 
+  // Fetch book + options
   useEffect(() => {
-    const fetchGenres = async () => {
-      setLoadingGenres(true);
+    const fetchBook = async () => {
+      const res = await fetch(`/api/internal/books/${id}/edit`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
 
-      try {
-        const res = await fetch("/api/internal/genres", {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`
-          },
-        });
+      if (res.ok) {
+        const data = await res.json();
 
-        if (res.ok) {
-          const data = await res.json();
+        setTitle(data.book.title);
+        setDescription(data.book.description || "");
+        setYear(data.book.year || "");
+        setCondition(data.book.condition || 0);
+        setSelectedAuthors(data.book.authors.map(a => ({ value: a.id, label: a.name })));
+        setSelectedGenres(data.book.genres.map(g => ({ value: g.id, label: g.name })));
+        setSelectedShelves(data.book.shelves.map(s => ({ value: s.id, label: s.name })));
 
-          setGenres(
-            data.genres.map((g) => ({ label: g.name, value: g.id }))
-          );
-        } else {
-          console.error("Failed to fetch genres...");
+        if (data.book.publisher) {
+          setSelectedPublisher({ value: data.book.publisher.id, label: data.book.publisher.name });
         }
-      } finally {
-        setLoadingGenres(false);
       }
     }
 
@@ -142,109 +137,39 @@ export default function New() {
       }
     }
 
+    const fetchGenres = async () => {
+      setLoadingGenres(true);
+
+      try {
+        const res = await fetch("/api/internal/genres", {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+          },
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+
+          setGenres(
+            data.genres.map((g) => ({ label: g.name, value: g.id }))
+          );
+        } else {
+          console.error("Failed to fetch genres...");
+        }
+      } finally {
+        setLoadingGenres(false);
+      }
+    }
+
     if (token) {
+      fetchBook();
       fetchShelves();
       fetchGenres();
       fetchAuthors();
       fetchPublishers();
     }
-  }, [token]);
-
-  const onCreateAuthor = async (inputString) => {
-    setLoadingAuthors(true);
-
-    try {
-      const res = await fetch("/api/internal/authors", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          author: { name: inputString }
-        })
-      });
-
-      if (res.ok) {
-        const data = await res.json();
-        const newAuthor = { value: data.author.id, label: data.author.name };
-
-        setAuthors(
-          (prev) => [...prev, newAuthor]
-        );
-
-        setSelectedAuthors((prev) => [...prev, newAuthor])
-      } else {
-        console.error("Failed to create author");
-      }
-    } finally {
-      setLoadingAuthors(false);
-    }
-  }
-
-  const onCreateGenre = async (inputString) => {
-    setLoadingGenres(true);
-
-    try {
-      const res = await fetch("/api/internal/genres", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          genre: { name: inputString }
-        })
-      });
-
-      if (res.ok) {
-        const data = await res.json();
-        const newGenre = { value: data.genre.id, label: data.genre.name };
-
-        setGenres(
-          (prev) => [...prev, newGenre]
-        );
-
-        setSelectedGenres((prev) => [...prev, newGenre])
-      } else {
-        console.error("Failed to create genres");
-      }
-    } finally {
-      setLoadingGenres(false);
-    }
-  }
-
-  const onCreatePublisher = async (inputString) => {
-    setLoadingPublishers(true);
-
-    try {
-      const res = await fetch("/api/internal/publishers", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          publisher: { name: inputString }
-        })
-      });
-
-      if (res.ok) {
-        const data = await res.json();
-        const newPublisher = { value: data.publisher.id, label: data.publisher.name };
-
-        setPublishers(
-          (prev) => [...prev, newPublisher]
-        );
-
-        setSelectedPublisher(newPublisher)
-      } else {
-        console.error("Failed to create publisher");
-      }
-    } finally {
-      setLoadingPublishers(false);
-    }
-  }
+  }, [id, token]);
 
   const handleCoverChange = (e) => {
     setCover(e.target.files[0]);
@@ -257,6 +182,7 @@ export default function New() {
   const removePhoto = (index) => {
     setPhotos(photos.filter((_, i) => i !== index));
   };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -273,63 +199,44 @@ export default function New() {
         formData.append("book[publisher_id]", selectedPublisher.value);
       }
 
-      for (const s of selectedShelves) {
-        formData.append("book[shelf_ids][]", s.value)
-      }
+      for (const s of selectedShelves) formData.append("book[shelf_ids][]", s.value);
+      for (const a of selectedAuthors) formData.append("book[author_ids][]", a.value);
+      for (const g of selectedGenres) formData.append("book[genre_ids][]", g.value);
 
-      for (const a of selectedAuthors) {
-        formData.append("book[author_ids][]", a.value)
-      }
+      if (cover) formData.append("book[cover]", cover);
+      for (const p of photos) formData.append("book[photos][]", p);
 
-      for (const g of selectedGenres) {
-        formData.append("book[genre_ids][]", g.value)
-      }
-
-      if (cover) {
-        formData.append("book[cover]", cover);
-      }
-
-      for (const p of photos) {
-        formData.append("book[photos][]", p);
-      }
-
-      const res = await fetch("/api/internal/books", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+      const res = await fetch(`/api/internal/books/${id}`, {
+        method: "PUT",
+        headers: { Authorization: `Bearer ${token}` },
         body: formData,
       });
 
       if (res.ok) {
         route("/your_shop");
       } else {
-        console.error("Failed to create book");
+        console.error("Failed to update book");
       }
     } finally {
       setLoading(false);
     }
-  }
+  };
 
   return (
     <>
       <Header />
       <div class="p-8 max-w-xl mx-auto">
         <div className="mb-4">
-          <H1>Adicione um Livro</H1>
-
-          <P>
-            Uma estante é como uma playlist, você organiza e adiciona os livros
-            que quiser
-          </P>
+          <H1>Editar Livro</H1>
+          <P>Atualiza as informações do teu livro.</P>
         </div>
 
-        <form  onSubmit={handleSubmit} class="grid gap-4">
+        <form onSubmit={handleSubmit} class="grid gap-4">
           <Input
             type="text"
             placeholder="Título do Livro"
             value={title}
-            required="true"
+            required
             onInput={(e) => setTitle(e.target.value)}
           />
 
@@ -372,13 +279,10 @@ export default function New() {
           <fieldset className="mb-1">
             <H3 className="mb-1">Autores</H3>
 
-            <CreatableSelect
+            <Select
               required="true"
               placeholder="Autores"
               isMulti
-              formatCreateLabel={(newValue) => `Criar autor "${newValue}"`}
-              createOptionPosition="first"
-              onCreateOption={onCreateAuthor}
               options={authors}
               isLoading={loadingAuthors}
               isDisabled={loadingAuthors}
@@ -389,13 +293,10 @@ export default function New() {
           <fieldset className="mb-1">
             <H3 className="mb-1">Gêneros</H3>
 
-            <CreatableSelect
+            <Select
               required="true"
               placeholder="Gêneros"
               isMulti
-              formatCreateLabel={(newValue) => `Criar gênero "${newValue}"`}
-              createOptionPosition="first"
-              onCreateOption={onCreateGenre}
               options={genres}
               isLoading={loadingGenres}
               isDisabled={loadingGenres}
@@ -406,13 +307,10 @@ export default function New() {
           <fieldset className="mb-1">
             <H3 className="mb-1">Editora</H3>
 
-            <CreatableSelect
+            <Select
               isClearable
               required="true"
               placeholder="Editora"
-              formatCreateLabel={(newValue) => `Criar editora "${newValue}"`}
-              createOptionPosition="first"
-              onCreateOption={onCreatePublisher}
               options={publishers}
               isLoading={loadingPublishers}
               isDisabled={loadingPublishers}
@@ -481,12 +379,8 @@ export default function New() {
             <ImageGallery images={photos} onRemove={removePhoto} />
           </fieldset>
 
-          <Button
-            type="submit"
-            size="lg"
-            disabled={loading}
-          >
-            {loading ? "Adicionando..." : "Adicionar Livro"}
+          <Button type="submit" size="lg" disabled={loading}>
+            {loading ? "Salvando..." : "Salvar alterações"}
           </Button>
         </form>
       </div>
