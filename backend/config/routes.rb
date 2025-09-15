@@ -20,6 +20,7 @@ Rails.application.routes.draw do
 
      resources :shops, only: [:index, :create, :destroy, :show, :update] do
        get "mine", on: :collection, action: :mine
+       get "books", on: :member, action: :books
      end
 
      resources :books, only: [:index, :create, :destroy, :update]

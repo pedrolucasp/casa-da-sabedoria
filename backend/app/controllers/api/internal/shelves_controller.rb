@@ -1,5 +1,12 @@
 class Api::Internal::ShelvesController < ApplicationController
-  before_action :set_shop, only: [:create, :mine]
+  before_action :set_shop, only: [:create, :mine, :index]
+
+  def index
+    @shelves = @shop.shelves.order(:name)
+
+    render json: { shelves: @shelves
+      .map { ::ShelfSerializer.new(it) } }
+  end
 
   def create
     @shelf = @shop.shelves.build(shelf_params)
@@ -9,6 +16,16 @@ class Api::Internal::ShelvesController < ApplicationController
     else
       # TODO: Move this into a reusable method
       render json: { errors: @shelf.errors.full_messages }, status: :unprocessable_content
+    end
+  end
+
+  def destroy
+    @shelf = Shelf.find_by(id: params[:id])
+
+    if @shelf.destroy
+      head :no_content
+    else
+      render json: { errors: @shelf.errors.full_messages }
     end
   end
 

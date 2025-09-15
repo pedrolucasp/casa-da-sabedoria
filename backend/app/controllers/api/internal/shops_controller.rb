@@ -22,6 +22,17 @@ class Api::Internal::ShopsController < ApplicationController
     end
   end
 
+  def books
+    @shop = Shop.find_by(id: params[:id])
+    @books = @shop.books
+
+    render json: {
+      books: @books.map { |b| b.as_json.merge(
+        cover_url: b.cover.present? ? rails_blob_path(b.cover, only_path: true) : nil
+      )}
+    }
+  end
+
   private
 
   def shop_params

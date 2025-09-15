@@ -21,6 +21,8 @@ class Api::Internal::BooksController < ApplicationController
         :description,
         :year,
         :publisher_id,
+        :cover,
+        photos: [],
         shelf_ids: [],
         genre_ids: [],
         author_ids: []
