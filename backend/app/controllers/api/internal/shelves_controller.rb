@@ -31,7 +31,7 @@ class Api::Internal::ShelvesController < ApplicationController
   end
 
   def show
-    render json: ::ShelfSerializer.new(@shelf, view: :with_books)
+    render json: ::ShelfSerializer.new(@shelf, view: :detailed_with_books)
   end
 
   def destroy
