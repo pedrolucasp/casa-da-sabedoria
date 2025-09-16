@@ -15,8 +15,11 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       get "/explore", to: "explore#index"
+
+      resources :books, only: [:show]
       resources :shops, only: [:show]
       resources :genres, only: [:index, :show]
+
       resources :shelves, only: [:index, :show] do
         get "curated", on: :collection, action: :curated
       end

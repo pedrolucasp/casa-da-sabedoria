@@ -27,9 +27,16 @@ class BookSerializer < ApplicationSerializer
   end
 
   view :fully_detailed do |v|
-    v.attributes :id, :title, :updated_at, :year, :cover_with_path
+    v.attributes :id, :title, :description, :created_at, :updated_at, :year, :cover_with_path
 
     v.association :authors, view: :summary
+    v.association :genres, view: :summary
+  end
+
+  view :show do |v|
+    v.attributes :id, :title, :description, :created_at, :updated_at, :year, :photos_path, :cover_with_path
+
+    v.association :authors, view: :detailed_with_basic_books
     v.association :genres, view: :summary
   end
 
