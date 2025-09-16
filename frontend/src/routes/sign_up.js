@@ -39,8 +39,7 @@ export default function SignUp() {
 
       const data = await res.json();
 
-      login(data.user, data.token);
-      route('/');
+      route('/login');
     } catch (err) {
       console.log(err);
       setError(err.message);
