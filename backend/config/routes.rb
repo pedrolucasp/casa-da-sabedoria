@@ -13,25 +13,34 @@ Rails.application.routes.draw do
 
 
   namespace :api do
-   namespace :internal do
-     resources :users, only: [:show, :update] do
-       get "me", on: :collection, action: :me
-     end
+    namespace :v1 do
+      get "/explore", to: "explore#index"
+      resources :shops, only: [:show]
+      resources :genres, only: [:index, :show]
+      resources :shelves, only: [:index, :show] do
+        get "curated", on: :collection, action: :curated
+      end
+    end
 
-     resources :shops, only: [:index, :create, :destroy, :show, :update] do
-       get "mine", on: :collection, action: :mine
-       get "books", on: :member, action: :books
-     end
+    namespace :internal do
+      resources :users, only: [:show, :update] do
+        get "me", on: :collection, action: :me
+      end
 
-     resources :books, only: [:index, :edit, :create, :destroy, :update]
+      resources :shops, only: [:index, :create, :destroy, :show, :update] do
+        get "mine", on: :collection, action: :mine
+        get "books", on: :member, action: :books
+      end
 
-     resources :shelves, only: [:index, :show, :update, :create, :destroy] do
-       get "mine", on: :collection, action: :mine
-     end
+      resources :books, only: [:index, :edit, :create, :destroy, :update]
 
-     resources :authors, only: [:index, :create]
-     resources :publishers, only: [:index, :create]
-     resources :genres, only: [:index, :create]
+      resources :shelves, only: [:index, :show, :update, :create, :destroy] do
+        get "mine", on: :collection, action: :mine
+      end
+
+      resources :authors, only: [:index, :create]
+      resources :publishers, only: [:index, :create]
+      resources :genres, only: [:index, :create]
+    end
    end
-  end
 end

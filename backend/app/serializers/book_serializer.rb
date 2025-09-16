@@ -1,3 +1,7 @@
+# TODO: Urgently need to pick a couple of styles here, since this is a mess
+# right now. For example, we need to always display the cover, except for
+# summary, since it is the simplest view.
+
 class BookSerializer < ApplicationSerializer
   delegate :id,
     :title,
@@ -19,13 +23,14 @@ class BookSerializer < ApplicationSerializer
   end
 
   view :detailed do |v|
-    v.attributes :id, :title, :updated_at, :year
+    v.attributes :id, :title, :updated_at, :year, :cover_with_path
   end
 
   view :fully_detailed do |v|
     v.attributes :id, :title, :updated_at, :year, :cover_with_path
 
     v.association :authors, view: :summary
+    v.association :genres, view: :summary
   end
 
   view :edit do |v|

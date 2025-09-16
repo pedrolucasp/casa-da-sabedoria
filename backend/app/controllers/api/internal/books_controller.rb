@@ -3,9 +3,9 @@ class Api::Internal::BooksController < ApplicationController
   before_action :set_book, only: [:edit, :update, :destroy]
 
   def index
-    @books = Book.includes(:authors, :publisher, :genres).all
+    @books = current_user.books.includes(:authors, :publisher, :genres).all
 
-    render json: { books: ::BookSerializer.new(@books, view: :detailed) }, status: :ok
+    render json: { books: ::BookSerializer.new(@books, view: :fully_detailed) }, status: :ok
   end
 
   def create

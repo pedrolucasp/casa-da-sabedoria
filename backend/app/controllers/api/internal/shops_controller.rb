@@ -24,14 +24,15 @@ class Api::Internal::ShopsController < ApplicationController
     end
   end
 
+  # TODO: Why not just use the BooksController#index? instead of this custom
+  # action? We can probably remove this action later, and add filtering
+  # capability to BooksController#index
   def books
     @shop = Shop.find_by(id: params[:id])
-    @books = @shop.books
+    @books = @shop.books.includes(:authors, :publisher, :genres).order(:title)
 
     render json: {
-      books: @books.map { |b| b.as_json.merge(
-        cover_url: b.cover.present? ? rails_blob_path(b.cover, only_path: true) : nil
-      )}
+      books: @books.map { BookSerializer.new(it, view: :fully_detailed) }
     }
   end
 
