@@ -16,7 +16,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       get "/explore", to: "explore#index"
 
-      resources :books, only: [:show]
+      resources :books, only: [:index, :show]
       resources :shops, only: [:show]
       resources :genres, only: [:index, :show]
 
