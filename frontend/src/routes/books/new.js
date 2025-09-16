@@ -1,12 +1,19 @@
 import { useEffect, useState } from "preact/hooks";
-import Header from '../../components/Header';
-import Footer from '../../components/Footer';
-import { Button } from '../../components/Button';
-import { P, H1, H2, H3 } from '../../components/Typography';
-import { Input, TextArea } from '../../components/Inputs';
+import {
+  Header,
+  Footer,
+  Button,
+  Input,
+  TextArea,
+  ImageGallery,
+  P,
+  H1,
+  H2,
+  H3
+} from '../../components';
+
 import { useAuth } from '../../contexts/AuthContext';
 import { useLocation } from 'preact-iso'
-import ImageGallery from '../../components/ImageGallery';
 
 import Select from 'react-select'
 import CreatableSelect, { useCreatable } from 'react-select/creatable';

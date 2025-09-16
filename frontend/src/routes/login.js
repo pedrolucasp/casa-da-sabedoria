@@ -2,7 +2,7 @@ import { useState } from "preact/hooks";
 import { useAuth } from "../contexts/AuthContext";
 import { useLocation } from 'preact-iso';
 
-import { Input } from '../components/Inputs';
+import { Input, Button } from '../components';
 
 export default function Login() {
   const { login } = useAuth();
@@ -37,6 +37,7 @@ export default function Login() {
       const token = res.headers.get("Authorization")?.replace("Bearer ", "");
 
       login(data.user, token);
+
       route('/');
     } catch (err) {
       console.log(err);
@@ -58,22 +59,22 @@ export default function Login() {
                type={email}
                value={email}
                onChange={(e) => setEmail(e.target.value)}
-              className="w-full border rounded-lg p-2" />
+               className="w-full" />
 
         <Input
           type="password"
-          placeholder="Password"
+          placeholder="Senha"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="w-full border rounded-lg p-2" />
+          className="w-full" />
 
-        <button type="submit" className="w-full bg-midnight text-white p-2 rounded-lg">
+        <Button type="submit" className="w-full">
           Entre
-        </button>
+        </Button>
 
         <p>ou</p>
 
-        <a className="text-midnight" href="/sign_up">Crie uma conta</a>
+        <a className="cursor-pointer text-midnight" href="/sign_up">Crie uma conta</a>
       </form>
     </div>
   );

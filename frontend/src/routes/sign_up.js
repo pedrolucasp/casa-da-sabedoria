@@ -1,7 +1,7 @@
 import { useState } from "preact/hooks";
 import { useAuth } from "../contexts/AuthContext";
 import { useLocation } from 'preact-iso';
-import { Input } from '../components/Inputs';
+import { Input, Button } from '../components';
 
 export default function SignUp() {
   const { login } = useAuth();
@@ -50,7 +50,7 @@ export default function SignUp() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-midnight text-white">
       <form onSubmit={handleSubmit} className="bg-white text-black p-6 rounded-xl w-80 space-y-4">
-        <a href="/">
+        <a className="cursor-pointer" href="/">
           <img src="/casa-da-sabedoria.svg" alt="logo" />
         </a>
 
@@ -61,36 +61,38 @@ export default function SignUp() {
                type={'text'}
                value={name}
                onChange={(e) => setName(e.target.value)}
-              className="w-full border rounded-lg p-2" />
+               className="w-full" />
 
 
         <Input placeholder="Email"
                type={email}
                value={email}
                onChange={(e) => setEmail(e.target.value)}
-              className="w-full border rounded-lg p-2" />
+               className="w-full" />
 
         <Input
           type="password"
           placeholder="Senha"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="w-full border rounded-lg p-2" />
+          className="w-full" />
 
         <Input
           type="password"
           placeholder="Confirmação da senha"
           value={passwordConfirmation}
           onChange={(e) => setPasswordConfirmation(e.target.value)}
-          className="w-full border rounded-lg p-2" />
+          className="w-full" />
 
-        <button type="submit" className="w-full bg-midnight text-white p-2 rounded-lg">
+        <Button type="submit" className="w-full">
           Registrar
-        </button>
+        </Button>
 
         <p>ou</p>
 
-        <a className="text-midnight" href="/login">Entre na sua conta</a>
+        <a className="text-midnight cursor-pointer" href="/login">
+          Entre na sua conta
+        </a>
       </form>
     </div>
   );

@@ -1,13 +1,17 @@
 import { useEffect, useState } from "preact/hooks";
-import Header from '../components/Header';
-import Footer from '../components/Footer';
-import { ButtonLink } from '../components/ButtonLink';
-import { Button } from '../components/Button';
-import { Input } from '../components/Inputs';
-import { P, H1, H2 } from '../components/Typography';
 
-import YourBooks from '../components/YourBooks';
-import YourShelves from '../components/YourShelves';
+import {
+  Header,
+  Footer,
+  ButtonLink,
+  Button,
+  Input,
+  P,
+  H1,
+  H2,
+  YourBooks,
+  YourShelves
+} from '../components';
 
 import { useAuth } from '../contexts/AuthContext';
 

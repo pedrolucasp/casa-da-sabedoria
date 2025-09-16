@@ -1,11 +1,17 @@
 import { useEffect, useState } from "preact/hooks";
 
-import Header from '../../components/Header';
-import Footer from '../../components/Footer';
-import { Button } from '../../components/Button';
-import { P, H1, H2, H3 } from '../../components/Typography';
-import { Input, TextArea } from '../../components/Inputs';
-import ImageGallery from '../../components/ImageGallery';
+import {
+  Header,
+  Footer,
+  Button,
+  Input,
+  TextArea,
+  ImageGallery,
+  P,
+  H1,
+  H2,
+  H3
+} from '../../components';
 
 import Select from 'react-select';
 import CreatableSelect from 'react-select/creatable';

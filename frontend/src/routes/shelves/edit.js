@@ -1,13 +1,8 @@
 import { useEffect, useState } from "preact/hooks";
 
-import Header from '../../components/Header';
-import Footer from '../../components/Footer';
+import { Header, Footer, Button, Input, P, H1, H2 } from '../../components'
 
-import { Button } from '../../components/Button';
-import { P, H1 } from '../../components/Typography';
-import { Input } from '../../components/Inputs';
 import { useAuth } from '../../contexts/AuthContext';
-
 import { useLocation } from 'preact-iso';
 
 export default function Edit({ id }) {
