@@ -12,6 +12,8 @@ import YourShop from './routes/your_shop'
 import Explore from './routes/explore'
 
 import { default as NewShop } from './routes/shops/new'
+import { default as ShopPage } from './routes/shops/show'
+
 import { default as NewShelf } from './routes/shelves/new'
 import { default as NewBook } from './routes/books/new'
 
@@ -31,13 +33,17 @@ export const App = () => {
             <SignUp path="/sign_up" />
             <Logout path="/logout" />
             <YourShop path="/your_shop" />
+
             <NewShop path="/shops/new" />
+            <ShopPage path="/shops/:id" />
+
             <NewShelf path="/shelves/new" />
             <EditShelf path="/shelves/:id/edit" />
-            <EditBook path="/books/:id/edit" />
-            <Explore path="/explore" />
 
             <NewBook path="/books/new" />
+            <EditBook path="/books/:id/edit" />
+
+            <Explore path="/explore" />
 
             <NotFound default />
           </Router>

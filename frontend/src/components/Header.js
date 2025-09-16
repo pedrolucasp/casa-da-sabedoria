@@ -26,7 +26,9 @@ const Header = () => {
 
   return (
     <div class="flex w-full justify-between items-center my-5 px-5">
-      <img src="/casa-da-sabedoria.svg" class="w-[215px]" alt="logo" />
+      <a className="cursor-pointer" href="/">
+        <img src="/casa-da-sabedoria.svg" class="w-[215px]" alt="logo" />
+      </a>
 
       <nav class="flex">
         <ul class="list-style-none flex items-center">
