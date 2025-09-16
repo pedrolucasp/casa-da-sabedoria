@@ -12,6 +12,8 @@ import ImageGallery from './ImageGallery';
 import YourBooks from './YourBooks';
 import YourShelves from './YourShelves';
 
+import ErrorBanner from './ErrorBanner';
+
 export {
   Button,
   ButtonLink,
@@ -26,5 +28,6 @@ export {
   P,
   H1,
   H2,
-  H3
+  H3,
+  ErrorBanner
 };
