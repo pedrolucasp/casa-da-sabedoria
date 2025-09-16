@@ -23,6 +23,7 @@ import { default as NewShelf } from './routes/shelves/new'
 import { default as EditShelf } from './routes/shelves/edit'
 
 const NotFound = lazy(() => import('./routes/not_found'))
+const About = lazy(() => import('./routes/about'))
 
 export const App = () => {
   return (
@@ -48,6 +49,8 @@ export const App = () => {
             <EditBook path="/books/:id/edit" />
 
             <Explore path="/explore" />
+
+            <About path="/about" />
 
             <NotFound default />
           </Router>
