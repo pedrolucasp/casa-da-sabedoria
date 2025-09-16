@@ -1,6 +1,6 @@
 import { useEffect, useState } from "preact/hooks";
 
-import { Header, Footer, Button, Input, P, H1, H2 } from '../../components'
+import { Header, Footer, Button, Input, P, H1, H2, ErrorBanner } from '../../components'
 
 import { useAuth } from '../../contexts/AuthContext';
 import { useLocation } from 'preact-iso';
@@ -11,6 +11,7 @@ export default function Edit({ id }) {
   const [loading, setLoading] = useState(true);
   const { token } = useAuth();
   const { route } = useLocation();
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchShelf = async() => {
@@ -40,6 +41,7 @@ export default function Edit({ id }) {
   async function handleSubmit(e) {
     e.preventDefault();
     setLoading(true);
+    setError(null);
 
     try {
       const res = await fetch(`/api/internal/shelves/${id}`, {
@@ -55,6 +57,8 @@ export default function Edit({ id }) {
         route('/your_shop');
       } else {
         console.error("Failed to patch shelf");
+        const errorData = await res.json();
+        setError(`Falhou devido: ${errorData.errors.join(", ")}`);
       }
     } finally {
       setLoading(false);
@@ -71,6 +75,7 @@ export default function Edit({ id }) {
         </div>
 
         <form onSubmit={handleSubmit} class="grid gap-4">
+          {error && <ErrorBanner message={error} />}
           <Input
             type="text"
             placeholder="Nome da estante"

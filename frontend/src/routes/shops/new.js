@@ -1,6 +1,6 @@
 import { useEffect, useState } from "preact/hooks";
 
-import { Header, Footer, Input, TextArea, Button, P, H1, H2 } from '../../components';
+import { Header, Footer, Input, TextArea, Button, P, H1, H2, ErrorBanner } from '../../components';
 
 import { useAuth } from '../../contexts/AuthContext';
 import { useLocation } from 'preact-iso'
@@ -10,6 +10,7 @@ export default function New() {
   const [bio, setBio] = useState("");
   const [location, setLocation] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const { token } = useAuth();
   const { route } = useLocation();
@@ -17,6 +18,7 @@ export default function New() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setError(null);
 
     try {
       const res = await fetch("/api/internal/shops", {
@@ -32,6 +34,8 @@ export default function New() {
         route('/your_shop');
       } else {
         console.error("Failed to create shop");
+        const errorData = await res.json();
+        setError(`Falhou devido: ${errorData.errors.join(", ")}`);
       }
     } finally {
       setLoading(false);
@@ -44,6 +48,8 @@ export default function New() {
       <div class="p-8 max-w-xl mx-auto">
         <h1 class="text-2xl font-bold mb-4">Dê vida pro seu sebo</h1>
         <form onSubmit={handleSubmit} class="grid gap-4">
+          {error && <ErrorBanner message={error} />}
+
           <Input
             type="text"
             placeholder="Nome do sebo"

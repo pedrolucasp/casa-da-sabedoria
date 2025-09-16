@@ -1,7 +1,7 @@
 import { useState } from "preact/hooks";
 import { useAuth } from "../contexts/AuthContext";
 import { useLocation } from 'preact-iso';
-import { Input, Button } from '../components';
+import { Input, Button, ErrorBanner } from '../components';
 
 export default function SignUp() {
   const { login } = useAuth();
@@ -16,6 +16,7 @@ export default function SignUp() {
 
   async function handleSubmit(e) {
     e.preventDefault();
+    setError(null);
 
     try {
       const res = await fetch("/api/internal/users", {
@@ -32,9 +33,8 @@ export default function SignUp() {
       });
 
       if (!res.ok) {
-        console.log(res);
-
-        throw new Error("Signup failed");
+        const errorData = await res.json();
+        throw new Error(`Falhou devido: ${errorData.errors.join(", ")}`);
       }
 
       const data = await res.json();
@@ -54,7 +54,7 @@ export default function SignUp() {
         </a>
 
         <h1 className="text-xl font-semibold">Crie uma conta</h1>
-        {error && <p className="text-red-500">{error}</p>}
+        {error && <ErrorBanner message={error} />}
 
         <Input placeholder="Nome"
                type={'text'}

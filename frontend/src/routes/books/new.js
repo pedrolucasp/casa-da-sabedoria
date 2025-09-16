@@ -9,7 +9,8 @@ import {
   P,
   H1,
   H2,
-  H3
+  H3,
+  ErrorBanner
 } from '../../components';
 
 import { useAuth } from '../../contexts/AuthContext';
@@ -32,7 +33,6 @@ export default function New() {
   const [cover, setCover] = useState(null);
   const [photos, setPhotos] = useState([]);
 
-
   // Options data and shit
   const [genres, setGenres] = useState([]);
   const [authors, setAuthors] = useState([]);
@@ -44,6 +44,8 @@ export default function New() {
   const [loadingAuthors, setLoadingAuthors] = useState(false);
   const [loadingGenres, setLoadingGenres] = useState(false);
   const [loadingPublishers, setLoadingPublishers] = useState(false);
+
+  const [error, setError] = useState(null);
 
   const { token } = useAuth();
   const { route } = useLocation();
@@ -268,6 +270,7 @@ export default function New() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setError(null);
 
     try {
       const formData = new FormData();
@@ -312,6 +315,8 @@ export default function New() {
         route("/your_shop");
       } else {
         console.error("Failed to create book");
+        const errorData = await res.json();
+        setError(`Falhou devido: ${errorData.errors.join(", ")}`);
       }
     } finally {
       setLoading(false);
@@ -332,6 +337,7 @@ export default function New() {
         </div>
 
         <form  onSubmit={handleSubmit} class="grid gap-4">
+          {error && <ErrorBanner message={error} />}
           <Input
             type="text"
             placeholder="Título do Livro"

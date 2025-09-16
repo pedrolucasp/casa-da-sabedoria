@@ -2,7 +2,7 @@ import { useState } from "preact/hooks";
 import { useAuth } from "../contexts/AuthContext";
 import { useLocation } from 'preact-iso';
 
-import { Input, Button } from '../components';
+import { Input, Button, ErrorBanner } from '../components';
 
 export default function Login() {
   const { login } = useAuth();
@@ -15,6 +15,7 @@ export default function Login() {
 
   async function handleSubmit(e) {
     e.preventDefault();
+    setError(null);
 
     try {
       const res = await fetch("/api/internal/users/sign_in", {
@@ -30,7 +31,8 @@ export default function Login() {
       if (!res.ok) {
         console.log(res);
 
-        throw new Error("Login failed");
+        const errorData = await res.json();
+        throw new Error(`Falhou devido: ${errorData.error}`);
       }
 
       const data = await res.json();
@@ -53,10 +55,10 @@ export default function Login() {
         </a>
 
         <h1 className="text-xl font-semibold">Entre na sua conta</h1>
-        {error && <p className="text-red-500">{error}</p>}
+        {error && <ErrorBanner message={error} />}
 
         <Input placeholder="Email"
-               type={email}
+               type="email"
                value={email}
                onChange={(e) => setEmail(e.target.value)}
                className="w-full" />

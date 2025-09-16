@@ -1,6 +1,6 @@
 import { useEffect, useState } from "preact/hooks";
 
-import { Header, Footer, Button, Input, P, H1, H2 } from '../../components'
+import { Header, Footer, Button, Input, P, H1, H2, ErrorBanner } from '../../components'
 
 import { useAuth } from '../../contexts/AuthContext';
 import { useLocation } from 'preact-iso'
@@ -8,6 +8,7 @@ import { useLocation } from 'preact-iso'
 export default function New() {
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const { token } = useAuth();
   const { route } = useLocation();
@@ -30,6 +31,8 @@ export default function New() {
         route('/your_shop');
       } else {
         console.error("Failed to create shelf");
+        const errorData = await res.json();
+        setError(`Falhou devido: ${errorData.errors.join(", ")}`);
       }
     } finally {
       setLoading(false);
@@ -50,6 +53,7 @@ export default function New() {
         </div>
 
         <form onSubmit={handleSubmit} class="grid gap-4">
+          {error && <ErrorBanner message={error} />}
           <Input
             type="text"
             placeholder="Nome da estante"

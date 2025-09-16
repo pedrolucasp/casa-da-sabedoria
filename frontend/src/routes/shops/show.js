@@ -38,6 +38,18 @@ export default function Shop({ id }) {
     )
   }
 
+  if (!shop) {
+    return (
+      <>
+        <Header />
+        <img src="/not_found.gif" alt="Not found"
+          className="max-w-xs mx-auto my-4" />
+        <div className="p-8 text-center">Loja não encontrada.</div>
+        <Footer />
+      </>
+    )
+  }
+
   // Breadcrumbs here would be dope
   return (
     <>
