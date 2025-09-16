@@ -246,7 +246,13 @@ puts "Publishers created or already existing."
     end
 
     rand(1..3).times.each do
-      book.genres << Genre.all.sample unless book.genres.include?(Genre.all.sample)
+      genre = Genre.all.sample
+
+      while book.genres.include?(genre)
+        genre = Genre.all.sample
+      end
+
+      book.genres << genre
     end
 
     rand(1..3).times.each do
