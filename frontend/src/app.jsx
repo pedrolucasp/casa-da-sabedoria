@@ -9,6 +9,7 @@ import SignUp from './routes/sign_up'
 import Login from './routes/login'
 import Logout from './routes/logout'
 import YourShop from './routes/your_shop'
+import Explore from './routes/explore'
 
 import { default as NewShop } from './routes/shops/new'
 import { default as NewShelf } from './routes/shelves/new'
@@ -34,6 +35,7 @@ export const App = () => {
             <NewShelf path="/shelves/new" />
             <EditShelf path="/shelves/:id/edit" />
             <EditBook path="/books/:id/edit" />
+            <Explore path="/explore" />
 
             <NewBook path="/books/new" />
 
