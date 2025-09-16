@@ -17,6 +17,7 @@ import { default as ShopPage } from './routes/shops/show'
 import { default as NewBook } from './routes/books/new'
 import { default as EditBook } from './routes/books/edit'
 import { default as BookPage } from './routes/books/show'
+import { default as Books } from './routes/books/index'
 
 import { default as NewShelf } from './routes/shelves/new'
 import { default as EditShelf } from './routes/shelves/edit'
@@ -41,6 +42,7 @@ export const App = () => {
             <NewShelf path="/shelves/new" />
             <EditShelf path="/shelves/:id/edit" />
 
+            <Books path="/books" />
             <NewBook path="/books/new" />
             <BookPage path="/books/:id" />
             <EditBook path="/books/:id/edit" />

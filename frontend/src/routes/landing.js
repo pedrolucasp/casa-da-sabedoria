@@ -1,11 +1,24 @@
+import { useState } from 'preact/hooks'
+import { useLocation } from 'preact-iso'
+
 import { BasicCard as Card } from '../components/Cards'
 import { Header, Footer, Button, Input, P, H1, H2 } from '../components'
 
-const Landing = () => (
-  <>
-    <Header />
+const Landing = () => {
+  const [search, setSearch] = useState("")
+  const { route } = useLocation()
 
-    {/* Hero */}
+  const onSearch = (e) => {
+    e.preventDefault()
+
+    route(`/books?q=${encodeURIComponent(search)}`)
+  }
+
+  return (
+    <>
+      <Header />
+
+      {/* Hero */}
       <section className="flex-1 flex flex-col items-center justify-center px-6 text-center py-20">
         <H1 variant="hero">
           Descubra Tesouros Esquecidos
@@ -13,10 +26,17 @@ const Landing = () => (
         <P>
           Um indexador de sebos — busque por título da obra, autor, ou editora.  
         </P>
-        <div className="mt-6 flex w-full max-w-md">
-          <Input placeholder="Busque por autor, título ou estante..." />
-          <Button className="ml-2 bg-midnight hover:opacity-90">Buscar</Button>
-        </div>
+
+        <form onSubmit={onSearch} className="mt-6 flex w-full max-w-md items-center">
+          <Input
+            value={search}
+            onInput={(e) => setSearch(e.target.value)}
+            placeholder="Pesquisar livros, sebos, autores, gêneros..."
+            className="mr-2"
+          />
+
+          <Button type="submit">Buscar</Button>
+        </form>
       </section>
 
       {/* Stats */}
@@ -50,8 +70,9 @@ const Landing = () => (
         </P>
       </section>
 
-    <Footer />
-  </>
-)
+      <Footer />
+    </>
+  )
+}
 
 export default Landing

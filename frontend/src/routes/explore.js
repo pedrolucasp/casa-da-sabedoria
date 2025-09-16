@@ -36,14 +36,6 @@ const Explore = () => {
     fetchData();
   }, []);
 
-  const onSearch = (e) => {
-    e.preventDefault()
-
-    // TODO: rig this crap up with a simple navigate and let rails do the dirty
-    // work
-    window.location.href = `/search?q=${encodeURIComponent(query)}`
-  }
-
   return (
     <>
       <Header />
@@ -51,16 +43,6 @@ const Explore = () => {
         <header className="mb-6">
           <h1 className="text-3xl font-bold">Explorar</h1>
           <p className="text-gray-600">Descubra livros, estantes e sebos.</p>
-
-          <form onSubmit={onSearch} className="mt-4 flex gap-2">
-            <Input
-              value={query}
-              onInput={e => setQuery(e.target.value)}
-              placeholder="Pesquisar livros, sebos, autores, gêneros..."
-              className="p-3" />
-
-            <Button>Buscar</Button>
-          </form>
         </header>
 
         {/* Shit'll be big bro */}
