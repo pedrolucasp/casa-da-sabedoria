@@ -70,7 +70,7 @@ const Explore = () => {
               <h2 class="text-2xl font-semibold mb-3">Em alta</h2>
 
               <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-                {trending.map(b => <BookCard key={b.id} book={b} />)}
+                {trending.map(b => <BookCard key={`trending-book-card-${b.id}`} book={b} />)}
               </div>
             </section>
 
@@ -79,7 +79,7 @@ const Explore = () => {
               <h2 class="text-2xl font-semibold mb-3">Sebos em destaque</h2>
 
               <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                {featuredShops.map(s => <ShopCard key={s.id} shop={s} />)}
+                {featuredShops.map(s => <ShopCard key={`featured-${s.id}`} shop={s} />)}
               </div>
             </section>
 
@@ -89,7 +89,7 @@ const Explore = () => {
 
               <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
                 {genres.map(g => (
-                  <a key={g.id} href={`/genres/${g.id}`} class="p-4 border rounded-md text-center">
+                  <a key={`genre-${g.id}`} href={`/genres/${g.id}`} class="p-4 border rounded-md text-center">
                     {g.name}
                   </a>
                 ))}
@@ -146,18 +146,27 @@ const CuratedShelves = () => {
       <h2 class="text-2xl font-semibold mb-3">Prateleiras selecionadas</h2>
       <div class="space-y-6">
         {shelves.map(s => (
-          <div key={s.id} class="border rounded-md p-4">
+          <div key={`curated-shelf-${s.id}`} class="border rounded-md p-4">
             <div class="flex items-center justify-between mb-3">
+
               <div>
                 <div class="font-semibold">{s.name}</div>
-                <div class="text-sm text-gray-600">por <a href={`/shops/${s.shop.id}`}>{s.shop.name}</a></div>
+                <div class="text-sm text-gray-600">por&nbsp;
+                  <a href={`/shops/${s.shop.id}`}>
+                    {s.shop.name}
+                  </a>
+                </div>
               </div>
-              <a href={`/shops/${s.shop.id}#shelf-${s.id}`} class="text-sm underline">Ver prateleira</a>
+
+              <a href={`/shops/${s.shop.id}#shelf-${s.id}`}
+                 class="text-sm underline">
+                Ver prateleira
+              </a>
             </div>
 
             <div class="grid grid-cols-3 sm:grid-cols-6 gap-3">
               {s.books.slice(0, 6).map(b => (
-                <BookCard key={b.id} book={b} />
+                <BookCard key={`curated-shelf-book-card-${b.id}`} book={b} />
               ))}
             </div>
           </div>

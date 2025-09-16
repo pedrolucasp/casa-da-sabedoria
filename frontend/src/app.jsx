@@ -14,11 +14,12 @@ import Explore from './routes/explore'
 import { default as NewShop } from './routes/shops/new'
 import { default as ShopPage } from './routes/shops/show'
 
-import { default as NewShelf } from './routes/shelves/new'
 import { default as NewBook } from './routes/books/new'
-
-import { default as EditShelf } from './routes/shelves/edit'
 import { default as EditBook } from './routes/books/edit'
+import { default as BookPage } from './routes/books/show'
+
+import { default as NewShelf } from './routes/shelves/new'
+import { default as EditShelf } from './routes/shelves/edit'
 
 const NotFound = lazy(() => import('./routes/not_found'))
 
@@ -41,6 +42,7 @@ export const App = () => {
             <EditShelf path="/shelves/:id/edit" />
 
             <NewBook path="/books/new" />
+            <BookPage path="/books/:id" />
             <EditBook path="/books/:id/edit" />
 
             <Explore path="/explore" />
